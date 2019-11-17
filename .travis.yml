@@ -2,27 +2,26 @@ language: shell
 services:
 - docker
 
-env:
-  matrix:
-    - ARCH=amd64 GOARCH=amd64 GOARM=6 QQEMU_ARCH=x86_64 TAG=amd64
-    - ARCH=armhf GOARCH=arm   GOARM=6 QEMU_ARCH=arm     TAG=arm
-    - ARCH=arm64 GOARCH=arm64 GOARM=6 QEMU_ARCH=arm64   TAG=arm64
+arch:
+  - amd64
+  - ppc64le
+  - s390x
+  - arm64
 
 before_install:
   - curl -L https://goss.rocks/install | sudo sh
   - sudo apt-get -y install qemu-user-static
   - docker run --rm --privileged multiarch/qemu-user-static:register
   - #echo "$DOCKER_PASSWORD" | docker login -u=knight --password-stdin
-
-script:
-  - sudo apt update
-  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
-  - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
-  - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
-  - sudo dpkg -i *.deb
-  - sudo systemctl status atlas
-  - #docker build -t knight/cloudflared-dns:$TAG --build-arg ARCH="$ARCH" --build-arg GOARCH="$GOARCH" --build-arg GOARM="$GOARM" ./
-  - #dgoss run --name cloudflared -ti knight/cloudflared-dns:$TAG
+jobs:
+  include:
+    script:
+      - sudo apt update
+      - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
+      - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
+      - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
+      - sudo dpkg -i *.deb
+      - sudo systemctl status atlas
 
 after_success:
   - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_BUILD_STAGE_NAME" == "Test" ]]; then docker push knight/cloudflared-dns:$TAG; fi
