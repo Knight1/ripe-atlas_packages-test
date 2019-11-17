@@ -1,6 +1,7 @@
 language: shell
 services:
 - docker
+os: Linux
 
 arch:
   - amd64
