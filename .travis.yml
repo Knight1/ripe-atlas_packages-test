@@ -16,7 +16,7 @@ before_install:
 
 script:
   - sudo apt update
-  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential -y
+  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
   - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
   - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
   - sudo dpkg -i *.deb
