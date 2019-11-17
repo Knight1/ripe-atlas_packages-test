@@ -15,3 +15,8 @@ jobs:
             apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential -y
             git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
             ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
+      - name: Upload artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: output
+          path: atlasswprobe-5000-1.deb
