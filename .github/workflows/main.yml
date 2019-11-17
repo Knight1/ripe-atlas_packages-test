@@ -1,7 +1,7 @@
 on: [push]
 
 jobs:
-  build dat:
+  build:
     runs-on: buster
     name: Build on ARMv7 
     steps:
