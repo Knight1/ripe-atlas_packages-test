@@ -8,8 +8,8 @@ jobs:
       - uses: actions/checkout@v1.0.0
       - uses: uraimo/run-on-arch-action@v1.0.5
         with:
-          architecture: ubuntu1804
-          distribution: buster
+          architecture: aarch64
+          distribution: ubuntu1804
           run: |
             apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential
             git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
