@@ -1,0 +1,16 @@
+on: [push]
+
+jobs:
+  build dat shit:
+    runs-on: buster
+    name: Build on ARMv7 
+    steps:
+      - uses: actions/checkout@v1.0.0
+      - uses: uraimo/run-on-arch-action@v1.0.5
+        with:
+          architecture: aarch64
+          distribution: buster
+          run: |
+            apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential
+            git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
+            ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
