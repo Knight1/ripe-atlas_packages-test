@@ -9,7 +9,7 @@ jobs:
       - uses: uraimo/run-on-arch-action@v1.0.5
         with:
           architecture: aarch64
-          distribution: ubuntu1804
+          distribution: ubuntu18.04
           run: |
             apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential
             git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
