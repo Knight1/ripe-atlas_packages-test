@@ -1,7 +1,7 @@
 language: shell
 services:
 - docker
-os: Linux
+os: linux
 
 arch:
   - amd64
@@ -14,8 +14,7 @@ before_install:
   - sudo apt-get -y install qemu-user-static
   - docker run --rm --privileged multiarch/qemu-user-static:register
   - #echo "$DOCKER_PASSWORD" | docker login -u=knight --password-stdin
-jobs:
-  include:
+  
     script:
       - sudo apt update
       - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
