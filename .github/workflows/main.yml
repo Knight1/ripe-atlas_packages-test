@@ -12,6 +12,6 @@ jobs:
           distribution: ubuntu18.04
           run: |
             apt update
-            apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential
+            apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential -y
             git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
             ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
