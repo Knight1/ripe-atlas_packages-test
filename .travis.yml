@@ -1,5 +1,4 @@
-sudo: required
-language: bash
+language: shell
 services:
 - docker
 
@@ -16,12 +15,12 @@ before_install:
   - #echo "$DOCKER_PASSWORD" | docker login -u=knight --password-stdin
 
 script:
-  - apt update
-  - apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential -y
+  - sudo apt update
+  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential -y
   - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
-  - ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
-  - dpkg -i *.deb
-  - systemctl status atlas
+  - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
+  - sudo dpkg -i *.deb
+  - sudo systemctl status atlas
   - #docker build -t knight/cloudflared-dns:$TAG --build-arg ARCH="$ARCH" --build-arg GOARCH="$GOARCH" --build-arg GOARM="$GOARM" ./
   - #dgoss run --name cloudflared -ti knight/cloudflared-dns:$TAG
 
