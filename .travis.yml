@@ -13,7 +13,7 @@ before_install:
   - curl -L https://goss.rocks/install | sudo sh
   - sudo apt-get -y install qemu-user-static
   - docker run --rm --privileged multiarch/qemu-user-static:register
-  - #echo "$DOCKER_PASSWORD" | docker login -u=knight --password-stdin
+ # - #echo "$DOCKER_PASSWORD" | docker login -u=knight --password-stdin
   
     script:
       - sudo apt update
