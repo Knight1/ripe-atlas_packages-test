@@ -15,13 +15,13 @@ before_install:
   - docker run --rm --privileged multiarch/qemu-user-static:register
  # - #echo "$DOCKER_PASSWORD" | docker login -u=knight --password-stdin
   
-    script:
-      - sudo apt update
-      - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
-      - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
-      - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
-      - sudo dpkg -i *.deb
-      - sudo systemctl status atlas
+ script:
+  - sudo apt update
+  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
+  - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
+  - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
+  - sudo dpkg -i *.deb
+  - sudo systemctl status atlas
 
 after_success:
   - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_BUILD_STAGE_NAME" == "Test" ]]; then docker push knight/cloudflared-dns:$TAG; fi
