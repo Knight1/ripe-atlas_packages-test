@@ -13,9 +13,8 @@ before_install:
   - curl -L https://goss.rocks/install | sudo sh
   - sudo apt-get -y install qemu-user-static
   - docker run --rm --privileged multiarch/qemu-user-static:register
- # - #echo "$DOCKER_PASSWORD" | docker login -u=knight --password-stdin
   
- script:
+script:
   - sudo apt update
   - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
   - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
