@@ -20,7 +20,8 @@ script:
   - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
   - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
   - sudo dpkg -i *.deb
-  - sudo systemctl status atlas
+  - sleep 10
+  - sudo systemctl status atlas -l
 
 after_success:
   - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_BUILD_STAGE_NAME" == "Test" ]]; then docker push knight/cloudflared-dns:$TAG; fi
