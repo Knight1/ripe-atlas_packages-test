@@ -25,8 +25,7 @@ script:
 
 deploy:
   provider: releases
-  api_key:
-    secure: "GITHUB_API_KEY"
+  api_key: "GITHUB_API_KEY"
   file: "*.deb"
   skip_cleanup: true
 
