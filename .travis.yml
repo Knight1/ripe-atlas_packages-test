@@ -23,9 +23,10 @@ script:
   - sleep 10
   - sudo systemctl status atlas -l
 
-after_success:
-  - if [[ "$TRAVIS_BRANCH" == "master" && "$TRAVIS_BUILD_STAGE_NAME" == "Test" ]]; then docker push knight/cloudflared-dns:$TAG; fi
-  - bash <(curl -s https://codecov.io/bash)
+deploy:
+  provider: releases
+  file: "*.deb"
+  skip_cleanup: true
 
 jobs:
   include:
