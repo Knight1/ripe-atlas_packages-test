@@ -33,6 +33,7 @@ jobs:
       name: Build ARM64
       arch: arm64
       script:
+        - cat /proc/cpuinfo
         - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
         - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
         - mv *.deb atlasswprobe-5000-"$TRAVIS_CPU_ARCH".deb
