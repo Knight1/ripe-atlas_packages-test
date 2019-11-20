@@ -37,8 +37,8 @@ jobs:
     - sudo dpkg -i *.deb
     - sleep 10
     - sudo systemctl status atlas -l
-    - docker build -t atlassw ./files/Dockerfiles.arm64
-    - docker run -d --name atlassw --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro
+    - docker build -t atlassw ./files/Dockerfile.arm64
+    - docker run -d --name atlassw --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro atlassw
     - docker ps && sleep 10
   - stage: build
     name: Build AMD64
