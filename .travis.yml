@@ -11,10 +11,12 @@ before_install:
 addons:
   apt:
     update: true
+
 stages:
 - build
 - name: deploy
   if: branch = master
+
 deploy:
   provider: releases
   edge: true
@@ -22,6 +24,7 @@ deploy:
   cleanup: false
   on:
     tags: true
+    
 jobs:
   include:
   - stage: build
