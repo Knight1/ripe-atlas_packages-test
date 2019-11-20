@@ -19,13 +19,13 @@ stages:
   - build
   - name: deploy
     if: branch = master
-  deploy:
-    provider: releases
-    edge: true
-    file: "*.deb"
-    cleanup: false
-    on:
-      tags: false
+deploy:
+  provider: releases
+  edge: true
+  file: "*.deb"
+  cleanup: false
+  on:
+    tags: false
 
 jobs:
   include:
