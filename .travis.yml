@@ -1,8 +1,8 @@
 language: shell
 services:
 - docker
-os: debian
-dist: buster
+os: ubuntu
+dist: bionic
 
 arch:
   - amd64
