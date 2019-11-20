@@ -10,7 +10,7 @@ before_install:
   - docker run --rm --privileged multiarch/qemu-user-static:register
 
 stages:
-  - test
+  - build
   - name: deploy
     if: branch = master
 
@@ -22,15 +22,23 @@ deploy:
   on:
     tags: false
 
-arch:
-  - amd64
-  - arm64
-  - ppc64le
-  - s390x
-
 jobs:
   include:
-    - stage: test
+    - stage: build
+      name: Build ARM64
+      arch: arm64
+      script:
+        - sudo apt update
+        - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
+        - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
+        - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
+        - mv *.deb atlasswprobe-5000-"$TRAVIS_CPU_ARCH".deb
+        - sudo dpkg -i *.deb
+        - sleep 10
+        - sudo systemctl status atlas -l
+    - stage: build
+      name: Build AMD64
+      arch: amd64
       script:
         - sudo apt update
         - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
