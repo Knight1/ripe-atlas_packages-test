@@ -16,8 +16,7 @@ before_install:
   - docker run --rm --privileged multiarch/qemu-user-static:register
 
 stages:
-  - compile
-  - test
+  - build
   - name: deploy
     if: branch = master
 
