@@ -2,28 +2,19 @@ language: shell
 services:
 - docker
 os: linux
+dist: buster
 
 arch:
   - amd64
+  - arm64
   - ppc64le
   - s390x
-  - arm64
 
 before_install:
   - curl -L https://goss.rocks/install | sudo sh
   - sudo apt-get -y install qemu-user-static
   - docker run --rm --privileged multiarch/qemu-user-static:register
   
-script:
-  - sudo apt update
-  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
-  - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
-  - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
-  - mv *.deb atlasswprobe-5000-"$TRAVIS_CPU_ARCH".deb
-  - sudo dpkg -i *.deb
-  - sleep 10
-  - sudo systemctl status atlas -l
-
 deploy:
   provider: releases
   edge: true
@@ -34,10 +25,21 @@ deploy:
 
 jobs:
   include:
+    - stage: build
+      script:
+        - sudo apt update
+        - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
+        - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
+        - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
+        - mv *.deb atlasswprobe-5000-"$TRAVIS_CPU_ARCH".deb
+        - sudo dpkg -i *.deb
+        - sleep 10
+        - sudo systemctl status atlas -l
     - stage: deploy
       script: 
-        - sleep 10 && echo Deploy
-        - wget https://github.com/estesp/manifest-tool/releases/download/v0.7.0/manifest-tool-linux-amd64
+        - docker login docker.pkg.github.com --username Knight1
+        - wget https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
         - chmod +x manifest-tool-linux-amd64
+        - ./manifest-tool-linux-amd64
         - if [[ "$TRAVIS_BRANCH" == "test" ]]; then ./manifest-tool-linux-amd64 push from-args --platforms linux/amd64,linux/arm,linux/arm64 --template knight/cloudflared-dns:amd64 --target knight/cloudflared-dns:latest; fi
       env: TAG=amd64
