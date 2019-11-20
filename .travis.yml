@@ -40,6 +40,7 @@ jobs:
         - sudo dpkg -i *.deb
         - sleep 10
         - sudo systemctl status atlas -l
+      env: TAG=arm64 ARCH=arm64
     - stage: build
       name: Build AMD64
       arch: amd64
