@@ -10,7 +10,7 @@ before_install:
   - docker run --rm --privileged multiarch/qemu-user-static:register
 
 stages:
-  - build
+  - test
   - name: deploy
     if: branch = master
 
@@ -30,7 +30,7 @@ arch:
 
 jobs:
   include:
-    - stage: build
+    - stage: test
       script:
         - sudo apt update
         - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
