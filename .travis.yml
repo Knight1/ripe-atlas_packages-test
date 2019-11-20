@@ -30,7 +30,6 @@ deploy:
 jobs:
   include:
     - stage: build
-
       script:
         - sudo apt update
         - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
