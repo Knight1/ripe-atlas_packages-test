@@ -9,7 +9,7 @@ before_install:
   - curl -L https://goss.rocks/install | sudo sh
   - sudo apt-get -y install qemu-user-static
   #- docker run --rm --privileged multiarch/qemu-user-static:register
-  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
+  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot dnsutils -y
   - cat /proc/cpuinfo
   - dig @resolver1.opendns.com ANY myip.opendns.com +short
 addons:
