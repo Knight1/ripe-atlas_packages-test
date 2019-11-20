@@ -7,10 +7,7 @@ dist: bionic
 before_install:
   - file /bin/bash
   - curl -L https://goss.rocks/install | sudo sh
-  - sudo apt-get -y install qemu-user-static
   - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot dnsutils -y
-  - cat /proc/cpuinfo
-  - dig @resolver1.opendns.com ANY myip.opendns.com +short
 addons:
   apt:
     update: true
@@ -33,7 +30,6 @@ jobs:
       name: Build ARM64
       arch: arm64
       script:
-        - cat /proc/cpuinfo
         - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
         - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
         - mv *.deb atlasswprobe-5000-"$TRAVIS_CPU_ARCH".deb
@@ -42,7 +38,6 @@ jobs:
         - sleep 10
         - sudo systemctl status atlas -l
         - file /usr/local/atlas/bin/ATLAS
-      env: TAG=arm64 ARCH=arm64
     - stage: build
       name: Build AMD64
       arch: amd64
@@ -54,10 +49,11 @@ jobs:
         - sleep 10
         - sudo systemctl status atlas -l
     - stage: deploy
+      name: Deploy multi-arch manifest to registry
+      arch: amd64
       script: 
         - docker login docker.pkg.github.com --username Knight1
         - wget https://github.com/estesp/manifest-tool/releases/download/v1.0.0/manifest-tool-linux-amd64
         - chmod +x manifest-tool-linux-amd64
         - ./manifest-tool-linux-amd64
         - if [[ "$TRAVIS_BRANCH" == "test" ]]; then ./manifest-tool-linux-amd64 push from-args --platforms linux/amd64,linux/arm,linux/arm64 --template knight/cloudflared-dns:amd64 --target knight/cloudflared-dns:latest; fi
-      env: TAG=amd64
