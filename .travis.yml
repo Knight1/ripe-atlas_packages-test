@@ -8,19 +8,24 @@ before_install:
   - curl -L https://goss.rocks/install | sudo sh
   - sudo apt-get -y install qemu-user-static
   - docker run --rm --privileged multiarch/qemu-user-static:register
+  - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
+  - cat /proc/cpuinfo
+  - dig @resolver1.opendns.com ANY myip.opendns.com +short
+addons:
+  apt:
+    update: true
 
 stages:
   - build
   - name: deploy
     if: branch = master
-
-deploy:
-  provider: releases
-  edge: true
-  file: "*.deb"
-  cleanup: false
-  on:
-    tags: false
+  deploy:
+    provider: releases
+    edge: true
+    file: "*.deb"
+    cleanup: false
+    on:
+      tags: false
 
 jobs:
   include:
@@ -28,8 +33,6 @@ jobs:
       name: Build ARM64
       arch: arm64
       script:
-        - sudo apt update
-        - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
         - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
         - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
         - mv *.deb atlasswprobe-5000-"$TRAVIS_CPU_ARCH".deb
@@ -40,8 +43,6 @@ jobs:
       name: Build AMD64
       arch: amd64
       script:
-        - sudo apt update
-        - sudo apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential fakeroot -y
         - git clone --recursive https://github.com/RIPE-NCC/ripe-atlas-software-probe.git
         - sudo ./ripe-atlas-software-probe/build-config/debian/bin/make-deb
         - mv *.deb atlasswprobe-5000-"$TRAVIS_CPU_ARCH".deb
