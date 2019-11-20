@@ -1,7 +1,7 @@
 language: shell
 services:
 - docker
-os: linux
+os: debian
 dist: buster
 
 arch:
@@ -14,12 +14,18 @@ before_install:
   - curl -L https://goss.rocks/install | sudo sh
   - sudo apt-get -y install qemu-user-static
   - docker run --rm --privileged multiarch/qemu-user-static:register
-  
+
+stages:
+  - compile
+  - test
+  - name: deploy
+    if: branch = master
+
 deploy:
   provider: releases
   edge: true
   file: "*.deb"
-  skip_cleanup: true
+  cleanup: false
   on:
     tags: false
 
