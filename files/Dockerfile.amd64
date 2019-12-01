@@ -9,6 +9,7 @@ RUN apt-get update ;\
     apt-get upgrade -y ;\
     apt-get install -y systemd systemd-sysv net-tools sudo ;\
     apt-get clean ;\
+    ls /usr/local/bin/ ;\
     dpkg -i atlasswprobe-5000-amd64.deb ;\
     sudo rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ;\
     sudo rm -f /lib/systemd/system/multi-user.target.wants/* \

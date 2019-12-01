@@ -1,4 +1,4 @@
-#on: [push]
+on: [push]
 
 jobs:
   build:
@@ -9,7 +9,7 @@ jobs:
       - uses: uraimo/run-on-arch-action@v1.0.5
         with:
           architecture: aarch64
-          distribution: ubuntu18.04
+          distribution: buster
           run: |
             apt update
             apt install git tar fakeroot libssl-dev autoconf automake libtool build-essential -y

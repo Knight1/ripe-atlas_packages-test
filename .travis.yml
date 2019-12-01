@@ -37,9 +37,9 @@ jobs:
     - sudo dpkg -i *.deb
     - sleep 10
     - sudo systemctl status atlas -l
-    - docker build -t atlassw . -f files/Dockerfile.arm64
-    - docker run -d --name atlassw --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro atlassw
-    - docker ps && sleep 10
+    - sudo docker build -t atlassw . -f files/Dockerfile.arm64
+    - sudo docker run -d --name atlassw --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro atlassw
+    - sleep 10 && docker ps
   - stage: build
     name: Build AMD64
     arch: amd64
@@ -50,9 +50,10 @@ jobs:
     - sudo dpkg -i *.deb
     - sleep 10
     - sudo systemctl status atlas -l
-    - docker build -t atlassw . -f files/Dockerfile.amd64
-    - docker run -d --name atlassw --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro atlassw
-    - docker ps && sleep 10
+    - sudo docker build -t atlassw . -f files/Dockerfile.amd64
+    - sudo docker run --privileged --rm -t -v /sys/kernel/debug:/sys/kernel/debug:rw -v /lib/modules:/lib/modules:ro atlassw
+    - #docker run -d --name atlassw --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro atlassw
+    - sleep 10 && docker ps
   - stage: deploy
     name: Deploy multi-arch manifest to registry
     arch: amd64
